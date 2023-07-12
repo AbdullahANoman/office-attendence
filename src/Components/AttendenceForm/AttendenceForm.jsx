@@ -5,7 +5,7 @@ import "./AttendenceForm.css";
 const AttendenceForm = () => {
   const storedAttendance = JSON.parse(localStorage.getItem("attendance"));
   const [attendance, setAttendance] = useState(
-    storedAttendance || Array(31).fill(2)
+    storedAttendance || Array(31).fill()
   ); // Default value is 2 (Absent)
   const [currentTime, setCurrentTime] = useState(new Date());
 
@@ -59,7 +59,7 @@ const AttendenceForm = () => {
       <div className="w-1/2 mx-auto mt-20 shadow-2xl shadow-black p-5 pb-20 pt-10">
         <div>
           {/* clock ui here */}
-          <div className="mb-10 flex flex-col justify-start items-start ms-11 text-gray-800">
+          <div className="mb-10 flex flex-col justify-start items-start ms-11 text-white">
             <div className="text-6xl font-bold">{formatTime(currentTime)}</div>
             <div className="text-2xl font-bold mt-3">
               {formatDate(currentTime)}
@@ -67,7 +67,7 @@ const AttendenceForm = () => {
           </div>
           <div className=" pb-10 mb-4 text-rose-200">
             <p className="text-4xl font-bold text-white border-text2 mb-2">
-              This month: {month}
+              Running Month {month}
             </p>
             <p className="text-3xl font-bold text-white border-text2 mb-2">
               Total days: {totalDays}
@@ -164,13 +164,13 @@ const AttendenceForm = () => {
 const getStatusBackgroundColor = (status) => {
   switch (status) {
     case 1: // Present
-      return "green";
+      return "rgba(0, 128, 0, 0.5)"; // Green with 60% opacity
     case 2: // Absent
-      return "red";
+      return "rgba(255, 0, 0, 0.4)"; // Red with 60% opacity
     case 3: // Vacation
-      return "orange";
+      return "rgba(255, 165, 0, 0.5)"; // Orange with 60% opacity
     default:
-      return "black";
+      return "rgba(255, 255, 255, 0.3)"; // White with 60% opacity
   }
 };
 
