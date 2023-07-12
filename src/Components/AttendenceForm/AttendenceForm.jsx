@@ -5,8 +5,8 @@ import "./AttendenceForm.css";
 const AttendenceForm = () => {
   const storedAttendance = JSON.parse(localStorage.getItem("attendance"));
   const [attendance, setAttendance] = useState(
-    storedAttendance || Array(31).fill()
-  ); // Default value is 2 (Absent)
+    storedAttendance || Array(31).fill(4)
+  ); // Default value is  (Absent)
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -55,8 +55,8 @@ const AttendenceForm = () => {
   const vacationDays = attendance.filter((status) => status === 3).length;
 
   return (
-    <div className="pt-20 office-background pb-56 ">
-      <div className="w-1/2 mx-auto mt-20 shadow-2xl shadow-black p-5 pb-20 pt-10">
+    <div className=" office-background pb-56 ">
+      <div className="w-1/2 mx-auto  mt-5 shadow-2xl shadow-black p-5 pb-20 pt-6">
         <div>
           {/* clock ui here */}
           <div className="mb-10 flex flex-col justify-start items-start ms-11 text-white">
@@ -65,7 +65,7 @@ const AttendenceForm = () => {
               {formatDate(currentTime)}
             </div>
           </div>
-          <div className=" pb-10 mb-4 text-rose-200">
+          <div className=" pb-5 mb-4 text-rose-200">
             <p className="text-4xl font-bold text-white border-text2 mb-2">
               Running Month {month}
             </p>
@@ -73,7 +73,7 @@ const AttendenceForm = () => {
               Total days: {totalDays}
             </p>
             <div>
-              <div className="text-2xl font-extrabold flex justify-center gap-10 mb-5 text-white  border-text2">
+              <div className="text-2xl font-extrabold flex justify-center gap-10 mb-2 text-white  border-text2">
                 <p>Present: {presentDays}</p>
                 <p>Absent: {absentDays}</p>
                 <p>Vacation: {vacationDays}</p>
@@ -109,7 +109,7 @@ const AttendenceForm = () => {
             >
               {index + 1}
               <select
-                value={status}
+                value={attendance[index]} // Use attendance[index] instead of status
                 onChange={(e) => handleChange(index, parseInt(e.target.value))}
                 style={{
                   position: "absolute",
@@ -124,23 +124,24 @@ const AttendenceForm = () => {
                   border: "none",
                 }}
               >
+          
                 <option
                   value={1}
-                  style={{ backgroundColor: "green", color: "black" }}
+                  style={{ backgroundColor: "red", color: "black" }}
                 >
-                  Pre
+                  Absent
                 </option>
                 <option
                   value={2}
-                  style={{ backgroundColor: "red", color: "black" }}
+                  style={{ backgroundColor: "green", color: "black" }}
                 >
-                  Abs
+                  Present
                 </option>
                 <option
                   value={3}
                   style={{ backgroundColor: "orange", color: "black" }}
                 >
-                  Vac
+                  Vacation
                 </option>
               </select>
               <span
@@ -163,14 +164,16 @@ const AttendenceForm = () => {
 
 const getStatusBackgroundColor = (status) => {
   switch (status) {
-    case 1: // Present
+    case 2: // Present
       return "rgba(0, 128, 0, 0.5)"; // Green with 60% opacity
-    case 2: // Absent
+    case 1: // Absent
       return "rgba(255, 0, 0, 0.4)"; // Red with 60% opacity
     case 3: // Vacation
       return "rgba(255, 165, 0, 0.5)"; // Orange with 60% opacity
-    default:
+    case 4: // Vacation
       return "rgba(255, 255, 255, 0.3)"; // White with 60% opacity
+    default:
+      return ""; // White with 60% opacity
   }
 };
 

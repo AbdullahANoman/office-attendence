@@ -1,5 +1,5 @@
 .office-background {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("/officebg.jpg");
+    background-image: linear-gradient(rgba(54, 57, 34, 0.6), rgba(40, 5, 63, 0.6)), url("/officebg.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
