@@ -1,9 +1,12 @@
-import  { useState, useEffect } from "react";
+import  { useState, useEffect, useContext } from "react";
 import moment from "moment";
 import "./AttendenceForm.css";
+import { AuthContext } from "../../Providers/AuthProviders";
 // import CountUp from "react-countup";
 
 const AttendenceForm = () => {
+  const {user} = useContext(AuthContext)
+  console.log(user)
   const storedAttendance = JSON.parse(localStorage.getItem("attendance"));
   const [attendance, setAttendance] = useState(
     storedAttendance || Array(31).fill({ status: 4, time: "" })
@@ -96,8 +99,8 @@ const AttendenceForm = () => {
               </div>
             </div>
             <div>
-              <p className="text-white text-lg font-bold">Employe Name:</p>
-              <p className="text-white text-lg font-bold">Employe ID:</p>
+              <p className="text-white text-lg font-bold">Employee Name: {user?.displayName}</p>
+              <p className="text-white text-lg font-bold">Employee ID:</p>
             </div>
           </div>
           <div className="pb-5 mb-4 text-rose-200">
