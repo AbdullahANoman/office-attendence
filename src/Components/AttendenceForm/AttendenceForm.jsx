@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import moment from "moment";
 import "./AttendenceForm.css";
-import CountUp from "react-countup";
+// import CountUp from "react-countup";
 
 const AttendenceForm = () => {
   const storedAttendance = JSON.parse(localStorage.getItem("attendance"));
@@ -160,8 +160,10 @@ const AttendenceForm = () => {
                   cursor: "pointer",
                   border: "none",
                 }}
+                className="w-full h-full"
               >
                 <option
+                className=""
                   value={1}
                   style={{ backgroundColor: "red", color: "black" }}
                 >
