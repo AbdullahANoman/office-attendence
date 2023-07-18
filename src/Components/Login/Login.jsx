@@ -1,16 +1,18 @@
 import { Link, useNavigate } from "react-router-dom";
 
 import { FcGoogle } from "react-icons/fc";
-import  { useContext, useRef } from "react";
+import { useContext, useRef } from "react";
 
 import { toast } from "react-hot-toast";
-import {TbFidgetSpinner} from 'react-icons/tb';
+import { TbFidgetSpinner } from "react-icons/tb";
 import { AuthContext } from "../../Providers/AuthProviders";
 const Login = () => {
-  const { loading, setLoading , resetPassword , signIn, signInWithGoogle } = useContext(AuthContext);
-  const navigate = useNavigate()
-  const emailRef = useRef()
+  const { loading, setLoading, resetPassword, signIn, signInWithGoogle , } =
+    useContext(AuthContext);
+  const navigate = useNavigate();
+  const emailRef = useRef();
 
+  const user = useContext(AuthContext);
   const handleLogin = (event) => {
     event.preventDefault();
     const form = event.target;
@@ -18,57 +20,74 @@ const Login = () => {
     const password = form.password.value;
     console.log(email, password);
 
-    signIn(email, password).then(result=>{
-      const user = result.user;
-      navigate('/form')
-      setLoading(false)
-      console.log(user)
-      toast.success('Employee Login Successfully')
-      
-    }).catch(error=>{
-      console.log(error)
-      toast.error(error.message)
-      setLoading(false)
-    })
-      
+    signIn(email, password)
+      .then((result) => {
+        const loggedUser = result.user;
+        console.log(loggedUser)
+        if (user?.role == "Admin") {
+          navigate("/admin/manageUser");
+        } else {
+          navigate("/form");
+        }
+        setLoading(false);
+        toast.success("Employee Login Successfully");
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error(error.message);
+        setLoading(false);
+      });
   };
 
-  const handleGoogleSignIn = () =>{
-    signInWithGoogle().then(result=>{
-      const googleLoggedUser = result.user;
-      const saveUser = {image: googleLoggedUser.photoURL, name: googleLoggedUser.displayName , email: googleLoggedUser.email, role: 'Employee'}
-      fetch('http://localhost:5000/users',{
-        method : 'POST',
-        headers : {
-          'content-type' : 'application/json',
-        },
-        body : JSON.stringify(saveUser)
+  const handleGoogleSignIn = () => {
+    signInWithGoogle()
+      .then((result) => {
+        const googleLoggedUser = result.user;
+        const saveUser = {
+          image: googleLoggedUser.photoURL,
+          name: googleLoggedUser.displayName,
+          email: googleLoggedUser.email,
+          role: "Employee",
+        };
+        fetch("http://localhost:5000/users", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(saveUser),
+        });
+        if (user?.role == "Employee") {
+          navigate("/form");
+        } else {
+          navigate("/admin/manageUser");
+        }
+        toast.success("Employee Login Successfully");
+        setLoading(false);
+        console.log(googleLoggedUser);
       })
-      navigate('/form')
-      toast.success('Employee Login Successfully')
-      setLoading(false)
-      console.log(googleLoggedUser)
-    }).catch(error=>{
-      console.log(error)
-      toast.error(error.message)
-      setLoading(false)
-    })
-  }
+      .catch((error) => {
+        console.log(error);
+        toast.error(error.message);
+        setLoading(false);
+      });
+  };
 
-  const handleReset = () =>{
-    const email = emailRef.current.value ;
-    resetPassword(email) .then(()=>{
-      toast.success('Reset Email Send Your Email Address')
-      setLoading(false)
-    }).catch(error=>{
-      toast.error(error.message)
-      setLoading(false)
-    })
-    console.log(emailRef.current.value)
+  const handleReset = () => {
+    const email = emailRef.current.value;
+    resetPassword(email)
+      .then(() => {
+        toast.success("Reset Email Send Your Email Address");
+        setLoading(false);
+      })
+      .catch((error) => {
+        toast.error(error.message);
+        setLoading(false);
+      });
+    console.log(emailRef.current.value);
     // resetPassword()
-  }
+  };
 
-  console.log(loading)
+  console.log(loading);
   return (
     <div className="flex justify-center items-center min-h-screen">
       <div className="flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900">
@@ -78,7 +97,7 @@ const Login = () => {
             Sign in to access your account
           </p>
         </div>
-       
+
         <form
           onSubmit={handleLogin}
           action=""
@@ -122,12 +141,22 @@ const Login = () => {
               type="submit"
               className="bg-rose-500 w-full rounded-md py-3 text-white"
             >
-              {loading ? <TbFidgetSpinner className="animate-spin text-white mx-auto" size={24}></TbFidgetSpinner> : <p>Continue</p>}
+              {loading ? (
+                <TbFidgetSpinner
+                  className="animate-spin text-white mx-auto"
+                  size={24}
+                ></TbFidgetSpinner>
+              ) : (
+                <p>Continue</p>
+              )}
             </button>
           </div>
         </form>
         <div className="space-y-1">
-          <button onClick={handleReset} className="text-xs hover:underline hover:text-rose-500 text-gray-400">
+          <button
+            onClick={handleReset}
+            className="text-xs hover:underline hover:text-rose-500 text-gray-400"
+          >
             Forgot password?
           </button>
         </div>
@@ -138,7 +167,10 @@ const Login = () => {
           </p>
           <div className="flex-1 h-px sm:w-16 dark:bg-gray-700"></div>
         </div>
-        <div onClick={handleGoogleSignIn} className="flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer">
+        <div
+          onClick={handleGoogleSignIn}
+          className="flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer"
+        >
           <FcGoogle size={32} />
 
           <p>Continue with Google</p>

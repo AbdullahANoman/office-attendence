@@ -8,6 +8,10 @@ import AuthProvider from "./Providers/AuthProviders.jsx";
 import Login from "./Components/Login/Login";
 import SignUp from "./Components/SignUp/SignUp";
 import { Toaster } from "react-hot-toast";
+import Admin from "./Layout/Admin/Admin";
+// import ManageUser from "./Components/Admin/ManageUser/ManageUser";
+import ManageUser from "./Components/Admin/ManageUser/ManageUser";
+import EmployeementInformation from "./Components/Admin/EmployeementInformation/EmployeementInformation";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +26,20 @@ const router = createBrowserRouter([
     path: "/form",
     element: <AttendenceForm />,
   },
+  {
+    path : '/admin',
+    element : <Admin></Admin>,
+    children : [
+      {
+        path : 'manageUser',
+        element: <ManageUser></ManageUser>
+      },
+      {
+        path: 'employeeInformation',
+        element : <EmployeementInformation></EmployeementInformation>
+      }
+    ]
+  }
   
 ]);
 
