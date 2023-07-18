@@ -22,6 +22,7 @@ const router = createBrowserRouter([
     path: "/form",
     element: <AttendenceForm />,
   },
+  
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

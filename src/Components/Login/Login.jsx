@@ -35,13 +35,19 @@ const Login = () => {
 
   const handleGoogleSignIn = () =>{
     signInWithGoogle().then(result=>{
-      const user = result.user;
+      const googleLoggedUser = result.user;
+      const saveUser = {image: googleLoggedUser.photoURL, name: googleLoggedUser.displayName , email: googleLoggedUser.email, role: 'Employee'}
+      fetch('http://localhost:5000/users',{
+        method : 'POST',
+        headers : {
+          'content-type' : 'application/json',
+        },
+        body : JSON.stringify(saveUser)
+      })
       navigate('/form')
       toast.success('Employee Login Successfully')
       setLoading(false)
-      console.log(user)
-      
-      
+      console.log(googleLoggedUser)
     }).catch(error=>{
       console.log(error)
       toast.error(error.message)

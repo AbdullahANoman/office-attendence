@@ -44,10 +44,21 @@ const SignUp = () => {
         const photoURL = data?.data?.display_url;
         console.log(photoURL);
         createUser(email,password).then(result=>{
-          const user = result.user;
+          const loggedUser = result.user;
+          const savedUser = {image: photoURL , name: name, email: loggedUser.email, role: 'Employee'}
+          
+          console.log(savedUser)
+          fetch('http://localhost:5000/users',{
+            method : 'POST',
+            headers : {
+              'content-type' : 'application/json',
+            },
+            body : JSON.stringify(savedUser)
+          
+          })
           updateUserProfile(name,photoURL)
           navigate(from, {replace: true})
-          console.log(location,user)
+          console.log(location,loggedUser)
           toast.success('User Created Successfully ')
           setLoading(false)
         }).catch(error=>{
